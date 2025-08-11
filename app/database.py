@@ -9,8 +9,15 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db():
-    db = SessionLocal()
     try:
+        db = SessionLocal()
         yield db
+    except Exception as e:
+        # Log the error or print it for debugging
+        print(f"Database connection error: {e}")
+        raise
     finally:
-        db.close()
+        try:
+            db.close()
+        except Exception:
+            pass
