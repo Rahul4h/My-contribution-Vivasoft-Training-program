@@ -31,8 +31,10 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         if username is None:
             raise HTTPException(status_code=401, detail="Invalid token")
         return {"sub": username}
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+    except JWTError as e:
+        raise HTTPException(status_code=401, detail=f"Token validation failed: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Authentication error: {str(e)}")
 
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
