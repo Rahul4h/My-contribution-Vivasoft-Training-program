@@ -1,4 +1,4 @@
-from .base_model import *
+from .base_model import BaseModel
 from .user import User
 from .user_profile import UserProfile
 from .mentor_profile import MentorProfile
@@ -14,7 +14,7 @@ from .audit_log import AuditLog
 from .session_feedback import SessionFeedback
 
 __all__ = [
-    "User", "UserProfile", "MentorProfile", "MentorAvailability",
+    "BaseModel", "User", "UserProfile", "MentorProfile", "MentorAvailability",
     "Category", "Subject", "MentorSubject", "Review", 
     "MentorshipPlan", "MentorshipSession", "Notification",
     "AuditLog", "SessionFeedback"

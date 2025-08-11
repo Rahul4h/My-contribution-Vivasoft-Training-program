@@ -1,22 +1,22 @@
 from sqlalchemy import Column, String, ForeignKey, Numeric, Integer, Boolean, Text
 from sqlalchemy.dialects.postgresql import UUID
+from uuid import uuid4
 from .base_model import BaseModel
-import uuid
 
 class MentorshipPlan(BaseModel):
     __tablename__ = "mentorship_plans"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    mentorId = Column(UUID(as_uuid=True), ForeignKey('mentor_profiles.id'), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4, index=True)
+    mentor_profile_id = Column(UUID(as_uuid=True), ForeignKey('mentor_profiles.id'), nullable=False)
     title = Column(String(200), nullable=False)
-    litePrice = Column(Numeric(10, 2), nullable=True)
-    standardPrice = Column(Numeric(10, 2), nullable=True)
-    proPrice = Column(Numeric(10, 2), nullable=True)
-    liteDescription = Column(Text, nullable=True)
-    standardDescription = Column(Text, nullable=True)
-    proDescription = Column(Text, nullable=True)
-    callLimitPerMonth = Column(Integer, nullable=True)
-    chatSupport = Column(Boolean, default=False)
-    responseTime = Column(String(50), nullable=True)
-    handsOnSupport = Column(Boolean, default=False)
-    isActive = Column(Boolean, default=True)
+    lite_price = Column(Numeric(10, 2), nullable=True)
+    standard_price = Column(Numeric(10, 2), nullable=True)
+    pro_price = Column(Numeric(10, 2), nullable=True)
+    lite_description = Column(Text, nullable=True)
+    standard_description = Column(Text, nullable=True)
+    pro_description = Column(Text, nullable=True)
+    call_limit_per_month = Column(Integer, nullable=True)
+    chat_support = Column(Boolean, default=False)
+    response_time = Column(String(50), nullable=True)
+    hands_on_support = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True)
