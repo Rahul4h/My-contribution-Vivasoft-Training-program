@@ -9,17 +9,17 @@ class BaseService(ServiceInterface[ModelType], Generic[ModelType]):
     def __init__(self, repository: RepositoryInterface[ModelType] = Depends()):
         self.repository = repository
 
-    async def get_all(self, skip: int = 0, limit: int = 100) -> List[ModelType]:
-        return await self.repository.get_all(skip, limit)
+    def get_all(self, skip: int = 0, limit: int = 100) -> List[ModelType]:
+        return self.repository.get_all(skip, limit)
 
-    async def get_by_id(self, id: str) -> Optional[ModelType]:
-        return await self.repository.get_by_id(id)
+    def get_by_id(self, id: str) -> Optional[ModelType]:
+        return self.repository.get_by_id(id)
 
-    async def create(self, data: Dict[str, Any]) -> ModelType:
-        return await self.repository.create(data)
+    def create(self, data: Dict[str, Any]) -> ModelType:
+        return self.repository.create(data)
 
-    async def update(self, id: str, data: Dict[str, Any]) -> Optional[ModelType]:
-        return await self.repository.update(id, data)
+    def update(self, id: str, data: Dict[str, Any]) -> Optional[ModelType]:
+        return self.repository.update(id, data)
     
-    async def delete(self, id: str) -> bool:
-        return await self.repository.delete(id)
+    def delete(self, id: str) -> bool:
+        return self.repository.delete(id)
