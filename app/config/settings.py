@@ -3,7 +3,10 @@ from functools import lru_cache
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+try:
+    load_dotenv()
+except Exception as e:
+    print(f"Warning: Could not load .env file: {e}")
 
 class Settings(BaseModel):
     APP_NAME: str
@@ -22,23 +25,29 @@ class Settings(BaseModel):
 
     @classmethod
     def from_env(cls):
-        return cls(
-            # 🌐 App settings
-            APP_NAME=os.getenv("APP_NAME", "FastAPI Auth App"),
-            DATABASE_URL=os.getenv("DATABASE_URL", "sqlite:///./app.db"),
-            USERNAME=os.getenv("USERNAME", "postgres"),
-            PASSWORD=os.getenv("PASSWORD", "password"),
-            PORT_NUMBER=int(os.getenv("PORT_NUMBER", "8000")),
-            HOST=os.getenv("HOST", "127.0.0.1"),
-            
-            # 🔐 Security settings
-            SECRET_KEY=os.getenv("SECRET_KEY"),
-            ALGORITHM=os.getenv("ALGORITHM"),
-            ACCESS_TOKEN_EXPIRE_MINUTES=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")),
-            REFRESH_TOKEN_EXPIRE_MINUTES=int(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES")),
-            IS_REFRESH_TOKEN_AUTOMATIC=os.getenv("IS_REFRESH_TOKEN_AUTOMATIC", "true").lower() == "true"
-        )
+        try:
+            return cls(
+                # 🌐 App settings
+                APP_NAME=os.getenv("APP_NAME", "FastAPI Auth App"),
+                DATABASE_URL=os.getenv("DATABASE_URL", "sqlite:///./app.db"),
+                USERNAME=os.getenv("USERNAME", "postgres"),
+                PASSWORD=os.getenv("PASSWORD", "password"),
+                PORT_NUMBER=int(os.getenv("PORT_NUMBER", "8000")),
+                HOST=os.getenv("HOST", "127.0.0.1"),
+                
+                # 🔐 Security settings
+                SECRET_KEY=os.getenv("SECRET_KEY") or "fallback-secret-key-for-dev",
+                ALGORITHM=os.getenv("ALGORITHM") or "HS256",
+                ACCESS_TOKEN_EXPIRE_MINUTES=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")),
+                REFRESH_TOKEN_EXPIRE_MINUTES=int(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES", "10080")),
+                IS_REFRESH_TOKEN_AUTOMATIC=os.getenv("IS_REFRESH_TOKEN_AUTOMATIC", "true").lower() == "true"
+            )
+        except (ValueError, TypeError) as e:
+            raise ValueError(f"Invalid configuration value: {e}")
 
 @lru_cache()
 def get_settings():
-    return Settings.from_env()
+    try:
+        return Settings.from_env()
+    except Exception as e:
+        raise RuntimeError(f"Failed to load settings: {e}")
