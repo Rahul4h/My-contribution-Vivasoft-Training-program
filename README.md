@@ -1,3 +1,20 @@
+About This Repository
+
+This repository contains my work from the Vivasoft Training Program.
+
+The original repository was private.
+This is a public mirror of my contributions, including:
+
+Redis integration
+
+A middleware to generate metrics.
+
+Unit testing
+
+API development
+
+
+
 # Build APIs with FastAPI
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
@@ -97,8 +114,4 @@ API/
 └── README.md                  
 ```
 
-## 🤝 Contributing
-1. Clone the repository
-2. Create a meaningful branch
-3. Make your changes
-4. Submit a pull request
+
